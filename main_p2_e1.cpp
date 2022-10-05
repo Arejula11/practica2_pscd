@@ -6,7 +6,7 @@
 *         Compilar mediante
 *           g++ practica_1_V1.cpp -o practica_1_V1 -std=c++11 -pthread
 * ----------------------------------------------------------------------------- */
-
+//1 23 veces y 4 15 veces
 #include <iostream>
 #include <thread>
 #include <string>
@@ -18,7 +18,7 @@ using namespace std;
 const int N = 512;
 const int N_BUSC = 8; //# de procesos buscadores
 using VectInt = int[N];
-const int N_INTERVALOS = (N-1)/N_BUSC;
+const int N_INTERVALOS = (N)/N_BUSC;
 
 
 
@@ -27,7 +27,6 @@ void leerFichero(VectInt v){
     if(f.is_open()){
         for(int i=0; i<N; i++){
             f >> v[i];
-            f.ignore();
         }
     }else{
         cout << "error" << endl;
@@ -63,7 +62,7 @@ void buscador(bool& comenzar, const VectInt v, int i, int value, int contador[],
 
     }
     int result = 0;
-    search(v,(i-1)*N_INTERVALOS, i*N_INTERVALOS-1, value, result);
+    search(v,(i)*N_INTERVALOS, (i+1)*N_INTERVALOS-1, value, result);
     contador[i]= result;
     fin_procesos[i]= true;
     //cout<<"FIN PROCESO: "+ to_string(i) + '\n';
@@ -103,5 +102,8 @@ int main(){
          
     }
     cout<<"FIN";
+    /*for(int i = 0; i<N_BUSC;i++){
+        cout<<contador[i]<<endl;
+    }*/
     return 0;
 }
