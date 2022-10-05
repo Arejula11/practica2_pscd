@@ -41,6 +41,9 @@ void search(const VectInt v, const int i, const int d, const int value, int& max
     
 }
 
+//-----------------------------------------------------
+//Pre: 
+//Post: 
 void coordinador(bool& comenzar, VectInt v, bool fin_procesos[], int& maxVeces,
             int& indMin, int& indMax){
     leerFichero(v);
@@ -54,6 +57,9 @@ void coordinador(bool& comenzar, VectInt v, bool fin_procesos[], int& maxVeces,
     cout << "Índice máximo: " + to_string(indMax) + '\n';
 }
 
+//-----------------------------------------------------
+//Pre: 
+//Post: 
 void buscador(bool& comenzar, const VectInt v, int i, int value, bool fin_procesos[],  int& maxVeces,
             int& indMin, int& indMax, atomic_flag& tas){
                 
