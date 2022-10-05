@@ -93,9 +93,9 @@ int main(){
     }while(!valCorrec);
 
     thread P[N_BUSC+1];
-    P[N_BUSC+1]= thread(coordinador, ref(comenzar), ref(v), ref(fin_procesos), ref(contador));
+    P[N_BUSC]= thread(&coordinador, ref(comenzar), ref(v), ref(fin_procesos), ref(contador));
     for (int i = 0; i< N_BUSC; i++){
-        P[i]= thread(buscador,ref(comenzar), v, i, value,contador,fin_procesos);
+        P[i]= thread(&buscador,ref(comenzar), v, i, value,contador,fin_procesos);
     }
     
    for (int i = 0; i < N_BUSC+1; i++){
