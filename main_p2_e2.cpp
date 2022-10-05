@@ -12,6 +12,18 @@
 #include <string>
 
 using namespace std;
+const int N = 512;
+const int N_BUSC = 8; //# de procesos buscadores
+using VectInt = int[N];
+
+
+void coordinador(){
+    
+}
+
+void buscador(){
+    
+}
 
 int main(){
     
