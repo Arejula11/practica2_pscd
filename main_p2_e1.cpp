@@ -56,7 +56,7 @@ void coordinador(bool& comenzar, VectInt v, bool fin_procesos[], int contador[])
     comenzar = true; //Avisa a los procesos buscadores de la carga de datos
     for(int i = 0; i < N_BUSC; i++){
         while(!fin_procesos[i]){ 
-            this_thread::yield(); //espera activa, hasta la finalización de los procesos buscadores
+            this_thread::yield();//espera activa, hasta la finalización de los procesos buscadores
         }
     }
     int suma = 0;

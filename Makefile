@@ -12,6 +12,7 @@ CC=g++
 CPPFLAGS=-I. -g -std=c++11      #opciones de compilación
 LDFLAGS=-pthread             #opciones de enlazado (linkado)
 RM=rm -f
+#ERRORS = -fmax-errors=1
 
 all: main_p2_e1 main_p2_e2
 #-----------------------------------------------------------
@@ -24,7 +25,7 @@ main_p2_e1: main_p2_e1.o
 #-----------------------------------------------------------
 # Compilacion
 main_p2_e2.o: main_p2_e2.cpp
-	${CC} -c main_p2_e2.cpp ${CPPFLAGS}
+	${CC} -c main_p2_e2.cpp ${CPPFLAGS} 
 #linkado
 main_p2_e2: main_p2_e2.o
 	${CC} main_p2_e2.o -o main_p2_e2 ${LDFLAGS}
