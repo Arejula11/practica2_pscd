@@ -49,7 +49,8 @@ void coordinador(bool& comenzar, VectInt v, bool fin_procesos[], int& maxVeces,
     leerFichero(v);
     comenzar = true; //Avisa a los procesos buscadores de la carga de datos
     for(int i = 0; i < N_BUSC; i++){
-        while(!fin_procesos[i]){ //espera activa, hasta la finalización de los procesos buscadores
+        while(!fin_procesos[i]){
+            this_thread::yield(); //espera activa, hasta la finalización de los procesos buscadores
         }
     }
     cout << "Resultado: " + to_string(maxVeces) + '\n';
@@ -64,7 +65,7 @@ void buscador(bool& comenzar, const VectInt v, int i, int value, bool fin_proces
             int& indMin, int& indMax, atomic_flag& tas){
                 
     while(!comenzar){
-
+        this_thread::yield();
     }
     search(v,(i)*N_INTERVALOS, (i+1)*N_INTERVALOS-1, value, maxVeces, indMin, indMax, tas);
     
