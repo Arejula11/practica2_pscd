@@ -10,6 +10,7 @@
 #include <iostream>
 #include <thread>
 #include <string>
+#include <atomic>
 #include <fstream>
 
 
@@ -38,7 +39,27 @@ void leerFichero(VectInt v){
 //Post: 
 void search(const VectInt v, const int i, const int d, const int value, int& maxVeces,
             int& indMin, int& indMax, atomic_flag& tas){
-    
+       // int cont = 0;
+        while(tas.test_and_set()){
+             this_thread::yield();
+        }
+        for(int j = i; j <= d; j++){
+        if(v[j]==value){
+            maxVeces++; // al ser una variable local para cada proceso se puede ejecutar la suma sin posibles errores
+            //if (cont>maxVeces){
+             //   maxVeces = cont;
+                
+            //}
+            if (indMax < j){
+                indMax = j;
+            }
+            else if(indMin>j){
+                indMin = j;
+            }
+            
+        }
+    }
+        tas.clear();
 }
 
 //-----------------------------------------------------
@@ -53,7 +74,7 @@ void coordinador(bool& comenzar, VectInt v, bool fin_procesos[], int& maxVeces,
             this_thread::yield(); //espera activa, hasta la finalización de los procesos buscadores
         }
     }
-    cout << "Resultado: " + to_string(maxVeces) + '\n';
+    cout << "Máximas : " + to_string(maxVeces) + '\n';
     cout << "Índice mínimo: " + to_string(indMin) + '\n';
     cout << "Índice máximo: " + to_string(indMax) + '\n';
 }
@@ -67,7 +88,9 @@ void buscador(bool& comenzar, const VectInt v, int i, int value, bool fin_proces
     while(!comenzar){
         this_thread::yield();
     }
-    search(v,(i)*N_INTERVALOS, (i+1)*N_INTERVALOS-1, value, maxVeces, indMin, indMax, tas);
+    search(v,(i)*N_INTERVALOS, (i+1)*N_INTERVALOS-1, value, maxVeces, indMin, indMax, tas); 
+    fin_procesos[i]= true;
+    
     
 }
 
@@ -80,6 +103,7 @@ int main(){
     VectInt v;
     bool valCorrec = false;
     int value;
+    atomic_flag tas  = ATOMIC_FLAG_INIT;
     
     cout << "Introduce un valor entre 1 y 25: "<<endl;
     cin >> value;
@@ -94,13 +118,13 @@ int main(){
     }while(!valCorrec);
 
     thread P[N_BUSC+1]; //declaración procesos sin poner en marcha
-    //P[N_BUSC]= thread(&coordinador, ref(comenzar), ref(v), ref(fin_procesos), ref(contador)); // el proceso coordinador se pone en marcha
+    P[N_BUSC]= thread(&coordinador, ref(comenzar), ref(v), ref(fin_procesos), ref(maxVeces), ref(indMin), ref(indMax)); // el proceso coordinador se pone en marcha
     for (int i = 0; i < N_BUSC; i++){
-        //P[i]= thread(&buscador,ref(comenzar), v, i, value,contador,fin_procesos); // los procesos buscadores se ponen en marcha
+        P[i]= thread(&buscador,ref(comenzar), v, i, value,fin_procesos,ref(maxVeces), ref(indMin), ref(indMax),ref(tas)); // los procesos buscadores se ponen en marcha
     }
     
    for (int i = 0; i < N_BUSC+1; i++){
-         //P[i].join();
+         P[i].join();
          
     }
     cout << "FIN"; //comprobación de que todos los procesos han acabado correctamente y con ello el programa completo
