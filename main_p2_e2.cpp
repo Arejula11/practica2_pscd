@@ -40,10 +40,11 @@ void leerFichero(VectInt v){
 void search(const VectInt v, const int i, const int d, const int value, int& maxVeces,
             int& indMin, int& indMax, atomic_flag& tas){
        // int cont = 0;
-        while(tas.test_and_set()){
+        
+        for(int j = i; j <= d; j++){
+            while(tas.test_and_set()){
              this_thread::yield();
         }
-        for(int j = i; j <= d; j++){
         if(v[j]==value){
             maxVeces++; // al ser una variable local para cada proceso se puede ejecutar la suma sin posibles errores
             //if (cont>maxVeces){
@@ -58,8 +59,9 @@ void search(const VectInt v, const int i, const int d, const int value, int& max
             }
             
         }
+         tas.clear();
     }
-        tas.clear();
+       
 }
 
 //-----------------------------------------------------
