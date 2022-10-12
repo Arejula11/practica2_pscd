@@ -43,23 +43,23 @@ void search(const VectInt v, const int i, const int d, const int value, int& max
         
         for(int j = i; j <= d; j++){
             while(tas.test_and_set()){
-             this_thread::yield();
-        }
-        if(v[j]==value){
-            maxVeces++; // al ser una variable local para cada proceso se puede ejecutar la suma sin posibles errores
-            //if (cont>maxVeces){
-             //   maxVeces = cont;
-                
-            //}
-            if (indMax < j){
-                indMax = j;
+                this_thread::yield();
             }
-            else if(indMin>j){
-                indMin = j;
-            }
+            if(v[j]==value){
+                maxVeces++; // al ser una variable local para cada proceso se puede ejecutar la suma sin posibles errores
+                //if (cont>maxVeces){
+                 //   maxVeces = cont;
+
+                //}
+                if (indMax < j){
+                    indMax = j;
+                }
+                else if(indMin>j){
+                    indMin = j;
+                }
             
-        }
-         tas.clear();
+            }
+            tas.clear();
     }
        
 }
@@ -111,9 +111,9 @@ int main(){
     cin >> value;
     do { //comprueba que el valor introducido se encuentra entre el 1 y el 25
         if(value < 1 || value > 25){
-        cout << "El valor no se encuentra entre los valores indicados"<< endl;
-        cout << "Vuelve a introudcir un valor:" << endl;
-        cin >> value;
+            cout << "El valor no se encuentra entre los valores indicados"<< endl;
+            cout << "Vuelve a introudcir un valor:" << endl;
+            cin >> value;
         }else{
             valCorrec = true;
         }

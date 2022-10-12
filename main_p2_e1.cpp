@@ -97,9 +97,9 @@ int main(){
     cin >> value;
     do { //comprueba que el valor introducido se encuentra entre el 1 y el 25
         if(value < 1 || value > 25){
-        cout << "El valor no se encuentra entre los valores indicados"<< endl;
-        cout << "Vuelve a introudcir un valor:" << endl;
-        cin >> value;
+            cout << "El valor no se encuentra entre los valores indicados"<< endl;
+            cout << "Vuelve a introudcir un valor:" << endl;
+            cin >> value;
         }else{
             valCorrec = true;
         }
