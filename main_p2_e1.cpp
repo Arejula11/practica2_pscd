@@ -1,12 +1,12 @@
 /* ----------------------------------------------------------------------------
 * File:   practica_1_V1.cpp
-* Author: PSCD-Unizar
+* Author: Pablo Angusto Delgado 842255 y Miguel Aréjula Aisa 850068
 * Date:   octubre 2022
-* Coms:   Parte del práctica 1 de PSCD
+* Coms:   Parte del práctica 2 de PSCD
 *         Compilar mediante
-*           g++ practica_1_V1.cpp -o practica_1_V1 -std=c++11 -pthread
+*          make -f Makefile_p2_e1
 * ----------------------------------------------------------------------------- */
-//1 23 veces y 4 15 veces
+
 
 
 #include <iostream>
@@ -115,7 +115,7 @@ int main(){
          P[i].join();
          
     }
-    cout << "FIN"; //comprobación de que todos los procesos han acabado correctamente y con ello el programa completo
+    cout << "FIN"<<endl; //comprobación de que todos los procesos han acabado correctamente y con ello el programa completo
    
     return 0;
 }

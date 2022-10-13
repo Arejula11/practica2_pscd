@@ -1,10 +1,10 @@
 /* ----------------------------------------------------------------------------
 * File:   practica_1_V1.cpp
-* Author: PSCD-Unizar
+* Author: Pablo Angusto Delgado 842255 y Miguel Aréjula Aisa 850068
 * Date:   octubre 2022
 * Coms:   Parte del práctica 1 de PSCD
 *         Compilar mediante
-*           g++ practica_1_V1.cpp -o practica_1_V1 -std=c++11 -pthread
+*           make -f Makefile_p2_e2
 * ----------------------------------------------------------------------------- */
 
 #include <iostream>
@@ -39,18 +39,18 @@ void leerFichero(VectInt v){
 //Post: 
 void search(const VectInt v, const int i, const int d, const int value, int& maxVeces,
             int& indMin, int& indMax, atomic_flag& tas){
-       // int cont = 0;
+        int cont = 0;
         
         for(int j = i; j <= d; j++){
             while(tas.test_and_set()){
                 this_thread::yield();
             }
             if(v[j]==value){
-                maxVeces++; // al ser una variable local para cada proceso se puede ejecutar la suma sin posibles errores
-                //if (cont>maxVeces){
-                 //   maxVeces = cont;
+                cont++;
+                if (cont>maxVeces){
+                    maxVeces = cont;
 
-                //}
+                }
                 if (indMax < j){
                     indMax = j;
                 }
@@ -129,7 +129,7 @@ int main(){
          P[i].join();
          
     }
-    cout << "FIN"; //comprobación de que todos los procesos han acabado correctamente y con ello el programa completo
+    cout << "FIN"<<endl; //comprobación de que todos los procesos han acabado correctamente y con ello el programa completo
     
 
    
