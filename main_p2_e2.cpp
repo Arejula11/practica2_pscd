@@ -2,7 +2,7 @@
 * File:   practica_1_V1.cpp
 * Author: Pablo Angusto Delgado 842255 y Miguel Aréjula Aisa 850068
 * Date:   octubre 2022
-* Coms:   Parte del práctica 1 de PSCD
+* Coms:   Parte del práctica 2 de PSCD
 *         Compilar mediante
 *           make -f Makefile_p2_e2
 * ----------------------------------------------------------------------------- */
@@ -35,38 +35,53 @@ void leerFichero(VectInt v){
 }
 
 //-----------------------------------------------------
-//Pre: 
-//Post: 
+//Pre: v es un vector de N enteros, 
+//Post: maxVeces = num de repeticiones del intervalo en el que mas aparece repetido value, intMin = menor indice del vector v en el que se encuentra value e 
+//intMin = mayor indice del vector v en el que se encuentra value
 void search(const VectInt v, const int i, const int d, const int value, int& maxVeces,
             int& indMin, int& indMax, atomic_flag& tas){
         int cont = 0;
         
         for(int j = i; j <= d; j++){
-            while(tas.test_and_set()){
-                this_thread::yield();
-            }
+           
             if(v[j]==value){
-                cont++;
-                if (cont>maxVeces){
-                    maxVeces = cont;
-
-                }
+                cont++; // al ser una variable local en la función de cada proceso se puede ejecutar la suma sin posibles errores
+                while(tas.test_and_set()){
+                        this_thread::yield();
+                    }
+                    if (cont>maxVeces){ 
+                        
+                        maxVeces = cont;
+                    
+                    }
+                tas.clear();
+                while(tas.test_and_set()){
+                        this_thread::yield();
+                    }
                 if (indMax < j){
+                    
                     indMax = j;
+                    
                 }
-                else if(indMin>j){
+                tas.clear();
+                while(tas.test_and_set()){
+                        this_thread::yield();
+                }        
+                if(indMin>j){
                     indMin = j;
+                    
                 }
-            
+                tas.clear();
             }
-            tas.clear();
+            
     }
        
 }
 
 //-----------------------------------------------------
-//Pre: 
-//Post: 
+//Pre: v es un vector de N enteros, fin_procesos es un vector N_BUSC booleanos
+//Post: el vector v es completado con los números contenidos en el fichero "datos.txt" habilitando a los procesos buscadores su ejecución. 
+// Una vez terminado la busqueda muesetra en pantalla las variables maxVeces, indMin e indMax
 void coordinador(bool& comenzar, VectInt v, bool fin_procesos[], int& maxVeces,
             int& indMin, int& indMax){
     leerFichero(v);
@@ -82,8 +97,9 @@ void coordinador(bool& comenzar, VectInt v, bool fin_procesos[], int& maxVeces,
 }
 
 //-----------------------------------------------------
-//Pre: 
-//Post: 
+//Pre: v es un vector de N enteros, fin_procesos es un vector N_BUSC booleanos  y 0 <= i < N_BUSC
+//Post: Una vez el proceso coordinador habilite la ejecución de este proceso llamará a la función search, una vez acabda la busqueda
+// pondrá a true la componente i del vector fin_procesos
 void buscador(bool& comenzar, const VectInt v, int i, int value, bool fin_procesos[],  int& maxVeces,
             int& indMin, int& indMax, atomic_flag& tas){
                 
@@ -126,12 +142,8 @@ int main(){
     }
     
    for (int i = 0; i < N_BUSC+1; i++){
-         P[i].join();
-         
+         P[i].join(); 
     }
-    cout << "FIN"<<endl; //comprobación de que todos los procesos han acabado correctamente y con ello el programa completo
-    
 
-   
     return 0;
 }
