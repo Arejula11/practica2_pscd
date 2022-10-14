@@ -29,5 +29,4 @@ main_p2_e1: main_p2_e1.o
 # RM es una de las variables predefinidas en make: invoca borrado de fichero del SO
 clean:
 	${RM} main_p2_ej1.o main_p2_ej1
-	
-	
+
