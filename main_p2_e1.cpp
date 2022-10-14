@@ -25,7 +25,7 @@ const int N_INTERVALOS = (N)/N_BUSC;
 
 //-----------------------------------------------------
 //Pre: v es un vector de N de enteros  
-//Post: v es completado con los números contenidos en el fichero "datos.txt"
+//Post: el vector v es completado con los números contenidos en el fichero "datos.txt"
 void leerFichero(VectInt v){
     ifstream f("datos.txt");
     if(f.is_open()){
@@ -49,8 +49,11 @@ void search(const VectInt v, const int i, const int d, const int value, int& res
 }
 
 //-----------------------------------------------------
-//Pre: 
-//Post: 
+//Pre: v es un vector de N enteros, fin_procesos es un vector de N_BUSC booleanos, contador es un vector de N_BUSC enteros
+//Post: el vector v es completado con los números contenidos en el fichero "datos.txt" habilitando a los procesos buscadores su ejecución. 
+// Una vez terminado la busqueda suma las componentes del vector contador que contiene la información obtenida de los procesos buscadores
+// y lo muestra en pantalla.
+
 void coordinador(bool& comenzar, VectInt v, bool fin_procesos[], int contador[]){
     leerFichero(v);
     comenzar = true; //Avisa a los procesos buscadores de la carga de datos
@@ -68,8 +71,9 @@ void coordinador(bool& comenzar, VectInt v, bool fin_procesos[], int contador[])
 }
 
 //-----------------------------------------------------
-//Pre: 
-//Post: 
+//Pre:  v es un vector de N enteros, fin_procesos es un vector N_BUSC de booleanos, contador es un vectorde N_BUSC booleanos, 0 <= i < N_BUSC
+//Post: Una vez el proceso coordinador habilite la ejecución de este proceso rellenará la componente i del vector contador con result = Num α ∈ [i, d].value = v[α]
+// y pondrá a true la componente i del vector fin_procesos
 void buscador(bool& comenzar, const VectInt v, int i, int value, int contador[], bool fin_procesos[]){
     while(!comenzar){
         this_thread::yield();
@@ -112,10 +116,8 @@ int main(){
     }
     
    for (int i = 0; i < N_BUSC+1; i++){
-         P[i].join();
-         
+         P[i].join();     
     }
-    cout << "FIN"<<endl; //comprobación de que todos los procesos han acabado correctamente y con ello el programa completo
    
     return 0;
 }
